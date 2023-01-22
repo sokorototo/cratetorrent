@@ -1,6 +1,7 @@
 use std::{
     collections::{BTreeMap, HashMap},
     fs,
+    num::NonZeroUsize,
     sync::{
         self,
         atomic::{AtomicU64, AtomicUsize, Ordering},
@@ -211,7 +212,7 @@ impl Torrent {
             thread_ctx: Arc::new(ThreadContext {
                 tx: torrent_tx,
                 read_cache: sync::Mutex::new(LruCache::new(
-                    READ_CACHE_UPPER_BOUND,
+                    NonZeroUsize::new(READ_CACHE_UPPER_BOUND).unwrap(),
                 )),
                 files,
                 stats: Stats::default(),
