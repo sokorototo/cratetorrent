@@ -1,6 +1,7 @@
 pub(crate) mod file;
 pub(crate) mod piece;
 pub(crate) mod torrent;
+pub(crate) mod vectored_io;
 
 #[cfg(test)]
 mod tests {
@@ -328,23 +329,18 @@ mod tests {
     /// Creates a piece for testing that has 4 blocks of length `BLOCK_LEN`.
     fn make_piece(files: Range<FileIndex>) -> Piece {
         let blocks = vec![
-            (0..BLOCK_LEN)
-                .map(|b| b % u8::MAX as u32)
-                .map(|b| b as u8)
-                .collect::<Vec<u8>>(),
+            (0..BLOCK_LEN).map(|b| (b % 256) as u8).collect::<Vec<u8>>(),
             (BLOCK_LEN..2 * BLOCK_LEN)
-                .map(|b| b % u8::MAX as u32)
-                .map(|b| b as u8)
+                .map(|b| (b % 256) as u8)
                 .collect::<Vec<u8>>(),
             (2 * BLOCK_LEN..3 * BLOCK_LEN)
-                .map(|b| b % u8::MAX as u32)
-                .map(|b| b as u8)
+                .map(|b| (b % 256) as u8)
                 .collect::<Vec<u8>>(),
             (3 * BLOCK_LEN..4 * BLOCK_LEN)
-                .map(|b| b % u8::MAX as u32)
-                .map(|b| b as u8)
+                .map(|b| (b % 256) as u8)
                 .collect::<Vec<u8>>(),
         ];
+
         let expected_hash = {
             let mut hasher = Sha1::new();
             for block in blocks.iter() {
@@ -352,6 +348,7 @@ mod tests {
             }
             hasher.finalize().into()
         };
+
         let len = blocks.len() as u32 * BLOCK_LEN;
         // convert blocks to a b-tree map
         let (blocks, _) = blocks.into_iter().fold(

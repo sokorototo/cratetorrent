@@ -70,7 +70,7 @@ impl Piece {
         debug_assert_eq!(self.blocks.len(), block_count(self.len));
         let mut hasher = Sha1::new();
         for block in self.blocks.values() {
-            hasher.update(&block);
+            hasher.update(block.as_slice());
         }
         let hash = hasher.finalize();
         log::debug!("Piece hash: {:x}", hash);
@@ -129,7 +129,7 @@ impl Piece {
             // round
             bufs = tail;
 
-            torrent_write_offset += file_slice.len as u64;
+            torrent_write_offset += file_slice.len;
             total_write_count += file_slice.len;
         }
 
@@ -208,7 +208,7 @@ pub(super) fn read(
         // read data
         bufs = file.read(file_slice, bufs)?;
 
-        torrent_read_offset += file_slice.len as u64;
+        torrent_read_offset += file_slice.len;
         total_read_count += file_slice.len;
     }
 

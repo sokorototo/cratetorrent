@@ -411,7 +411,7 @@ impl<'a> IoVecs<'a> {
         // (as would happen by re-assigning a sublice of `self.bufs` to itself),
         // so we move the `bufs` slice out of `self` by value with the original
         // lifetime and take the slice from that.
-        let bufs = std::mem::replace(&mut self.bufs, &mut []);
+        let bufs = std::mem::take(&mut self.bufs);
         self.bufs = &mut bufs[bufs_to_remove_count..];
 
         // if there is a split, also adjust the split position

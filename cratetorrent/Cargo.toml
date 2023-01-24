@@ -8,18 +8,18 @@ repository = "https://github.com/mandreyel/cratetorrent/"
 homepage = "https://github.com/mandreyel/cratetorrent/"
 keywords = ["bittorrent", "torrent", "p2p", "networking"]
 categories = ["network-programming"]
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bitvec = "1.0.1"
+bitvec = "1"
 bytes = "1.0"
 futures = "0.3"
 hex = "0.4"
 log = "0.4"
 lru = "0.9.0"
-nix = "0.26.2"
+nix = "0.22"
 percent-encoding = "2.1"
 reqwest = "0.11"
 serde = "1.0"
@@ -27,9 +27,15 @@ serde_bencode = "0.2"
 serde_bytes = "0.11"
 serde_derive = "1.0"
 sha-1 = "0.10.1"
-tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync", "net", "time"] }
+tokio = { version = "1", features = [
+	"macros",
+	"rt-multi-thread",
+	"sync",
+	"net",
+	"time",
+] }
 tokio-util = { version = "0.7.4", features = ["codec"] }
-url = "2.2"
+url = "2.3"
 
 [dev-dependencies]
 mockito = "0.31.1"

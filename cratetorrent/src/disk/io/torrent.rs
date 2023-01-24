@@ -269,7 +269,7 @@ impl Torrent {
                     );
 
                     if let Err(e) =
-                        piece.write(torrent_piece_offset, &*ctx.files)
+                        piece.write(torrent_piece_offset, &ctx.files)
                     {
                         log::error!(
                             "Error writing piece {} to disk: {}",
